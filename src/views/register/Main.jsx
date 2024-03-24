@@ -11,9 +11,14 @@ import { helper } from "../../utils/helper";
 function Main() {
   const navigate = useNavigate()
   const initialValues = {
+    name: "",
     email : "",
     password: "",
-    confirm_password:""
+    confirm_password:"",
+    address : "",
+    dateOfBirth: "",
+    aadhaarNumber: "",
+    panNumber: ""
   }
   const {values, errors, handleBlur, touched,handleChange, handleSubmit} = useFormik({
         initialValues : initialValues,
@@ -77,6 +82,56 @@ function Main() {
                 <form onSubmit={handleSubmit}>
                
                 <div className="intro-x mt-8">
+                  <input
+                    type="text"
+                    name="name"
+                    className="intro-x login__input form-control py-3 px-4 block mt-4"
+                    placeholder="Name"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                    {errors.name && touched.name && <p className="text-red-800">{errors.name}</p>}
+                  <input
+                    type="text"
+                    name="address"
+                    className="intro-x login__input form-control py-3 px-4 block mt-4"
+                    placeholder="123 Main street"
+                    value={values.address}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                    {errors.address && touched.address && <p className="text-red-800">{errors.address}</p>}
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    className="intro-x login__input form-control py-3 px-4 block mt-4"
+                    // placeholder=""
+                    value={values.dateOfBirth}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                    {errors.dateOfBirth && touched.dateOfBirth && <p className="text-red-800">{errors.dateOfBirth}</p>}
+                  <input
+                    type="text"
+                    name="aadhaarNumber"
+                    className="intro-x login__input form-control py-3 px-4 block mt-4"
+                    // placeholder=""
+                    value={values.aadhaarNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                    {errors.aadhaarNumber && touched.aadhaarNumber && <p className="text-red-800">{errors.aadhaarNumber}</p>}
+                  <input
+                    type="text"
+                    name="panNumber"
+                    className="intro-x login__input form-control py-3 px-4 block mt-4"
+                    // placeholder=""
+                    value={values.panNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.panNumber && touched.panNumber && <p className="text-red-800">{errors.panNumber}</p>}
                   <input
                     type="text"
                     name="email"
