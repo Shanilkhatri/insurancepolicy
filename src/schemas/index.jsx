@@ -11,7 +11,7 @@ export const SignInSchema = Yup.object({
     password: Yup.string().min(4).max(10).required("Please enter your password"),
 })
 export const AddPolicySchema = Yup.object({
-    policy_name: Yup.string().min(3).max(45).required("Please enter policy name."),
-    policy_price: Yup.number().moreThan(0).required("Please enter policy price."),
-    policy_description: Yup.string().required("Please provide policy description.")
+    policyName: Yup.string().min(3).max(45).required("Please enter policy name."),
+    policyPrice: Yup.number().moreThan(0).required("Please enter policy price."),
+    policyDescription: Yup.string().required("Please provide policy description.")
 })

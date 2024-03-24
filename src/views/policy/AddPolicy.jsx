@@ -29,7 +29,7 @@ function AddPolicy() {
     policyDescription:"",
     policyCompany:"",
     policyCompanyDescription:"",
-    activePolicy:true,
+    activePolicy:"",
     claimsServed:0,
   }
   const {values, errors, handleBlur, touched,handleChange, handleSubmit} = useFormik({
@@ -159,7 +159,7 @@ function AddPolicy() {
                </div>
                <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
                  <label htmlFor='claimsServed' className="form-check-label ml-0 mt-4">
-                    Policy company
+                    Claims served
                 </label>
                 <input
                   type='number'
@@ -187,13 +187,13 @@ function AddPolicy() {
                 </select>
                 {errors.activePolicy && touched.activePolicy && <p className="text-red-800">{errors.activePolicy}</p>}
             </div>
-               <div className="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                 <button className="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
-                   Register
-                 </button>
                </div>
-               </div>
-               </form>
+            <div className="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+                    <button  className="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
+                      Submit
+                    </button>
+                  </div>
+            </form>
           </ModalBody>
         </Modal>
         {/* END: Super Large Modal Content */}
