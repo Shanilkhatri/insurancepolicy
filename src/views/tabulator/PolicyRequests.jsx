@@ -21,14 +21,26 @@ function Main() {
     value: "",
   });
 
+  const approveRequest = data =>{
+    console.log("approve request",data)
+    // call your api to approve here
+  }
+  const rejectRequest = data =>{
+    console.log("reject request",data)
+    // call your api to reject here
+  }
   const imageAssets = import.meta.globEager(
     `/src/assets/images/*.{jpg,jpeg,png,svg}`
   );
   const initTabulator = () => {
     tabulator.current = new Tabulator(tableRef.current, {
-      // ajaxURL: "https://dummy-data.left4code.com",
-      // ajaxFiltering: true,
-      // ajaxSorting: true,
+      // ajaxURL:"your/endpoint", //ajax URL
+      // ajaxConfig:{
+      //     method:"GET", //set request type to Position
+      //     headers: {
+      //         "Content-type": 'application/json; charset=utf-8', //set specific content type
+      //     },
+      // },
       printAsHtml: true,
       printStyled: true,
       pagination: "remote",
@@ -151,131 +163,49 @@ function Main() {
           print: false,
           download: false,
           formatter(cell) {
-            return `<div className="flex items-center lg:justify-center">
-                  ${
-                    cell.getData().request_status == "pending" ? `<button class="btn btn-success mr-1 mb-2">
-                      <i data-lucide="check" className="w-2 h-2 mr-2"></i>
-                    </button>
-                      <button class="btn btn-danger mr-1 mb-2">
-                      <i data-lucide="trash" className="w-2 h-2 mr-2"></i>
-                    </button>` 
-                    :
-                    cell.getData().request_status == "success" ?  
-                    `<button class="btn btn-rounded-success w-24 mr-1 mb-2">
-                    Success
-                  </button>` : `<button class="btn btn-rounded-danger w-24 mr-1 mb-2">
-                  Rejected
-                </button>`
-             }
-                    </div>`;
+
+            const actionContainer = dom(`
+            <div className="flex items-center lg:justify-center">
+            <button class="approveBtn btn btn-success mr-1 mb-2">
+            <i data-lucide="check"  className="w-2 h-2 mr-2"></i>
+          </button>
+          <button class="rejectBtn btn btn-danger mr-1 mb-2">
+            <i data-lucide="trash" className="w-2 h-2 mr-2"></i>
+          </button>
+          </div>
+          `)
+          const approveBtn = actionContainer.find('.approveBtn')
+          const rejectBtn = actionContainer.find('.rejectBtn')
+
+          dom(approveBtn).on("click", function () {
+            // Call your edit function with cell.getData() as an argument
+            approveRequest(cell.getData());
+        });
+          dom(rejectBtn).on("click", function () {
+            // Call your edit function with cell.getData() as an argument
+            rejectRequest(cell.getData());
+        });
+            if (cell.getData().request_status == "pending"){
+              return actionContainer[0]
+            }else{
+              return `<div className="flex items-center lg:justify-center">
+                    ${
+                      cell.getData().request_status == "pending" ? `${approveContainer}
+                      ${rejectContainer} 
+                      ` 
+                      :
+                      cell.getData().request_status == "success" ?  
+                      `<button class="btn btn-rounded-success w-24 mr-1 mb-2">
+                      Approved
+                    </button>` : `<button class="btn btn-rounded-danger w-24 mr-1 mb-2">
+                    Rejected
+                  </button>`
+               }
+                      </div>`;
+            }
           }
         },
-        // {
-        //   title: "STATUS",
-        //   minWidth: 200,
-        //   field: "status",
-        //   hozAlign: "center",
-        //   vertAlign: "middle",
-        //   print: false,
-        //   download: false,
-        //   formatter(cell) {
-        //     return `<div class="flex items-center lg:justify-center ${
-        //       cell.getData().status ? "text-success" : "text-danger"
-        //     }">
-        //         <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> ${
-        //           cell.getData().status ? "Active" : "Inactive"
-        //         }
-        //       </div>`;
-        //   },
-        // },
-        // {
-        //   title: "ACTIONS",
-        //   minWidth: 200,
-        //   field: "actions",
-        //   responsive: 1,
-        //   hozAlign: "center",
-        //   vertAlign: "middle",
-        //   print: false,
-        //   download: false,
-        //   formatter() {
-        //     const a = dom(`<div class="flex lg:justify-center items-center">
-        //         <a class="flex items-center mr-3" href="javascript:;">
-        //           <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-        //         </a>
-        //         <a class="flex items-center text-danger" href="javascript:;">
-        //           <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-        //         </a>
-        //       </div>`);
-        //     dom(a).on("click", function () {
-        //       // On click actions
-        //     });
-
-        //     return a[0];
-        //   },
-        // },
-
-        // For print format
-        // {
-        //   title: "PRODUCT NAME",
-        //   field: "name",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        // },
-        // {
-        //   title: "CATEGORY",
-        //   field: "category",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        // },
-        // {
-        //   title: "REMAINING STOCK",
-        //   field: "remaining_stock",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        // },
-        // {
-        //   title: "STATUS",
-        //   field: "status",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        //   formatterPrint(cell) {
-        //     return cell.getValue() ? "Active" : "Inactive";
-        //   },
-        // },
-        // {
-        //   title: "IMAGE 1",
-        //   field: "images",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        //   formatterPrint(cell) {
-        //     return cell.getValue()[0];
-        //   },
-        // },
-        // {
-        //   title: "IMAGE 2",
-        //   field: "images",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        //   formatterPrint(cell) {
-        //     return cell.getValue()[1];
-        //   },
-        // },
-        // {
-        //   title: "IMAGE 3",
-        //   field: "images",
-        //   visible: false,
-        //   print: true,
-        //   download: true,
-        //   formatterPrint(cell) {
-        //     return cell.getValue()[2];
-        //   },
-        // },
+        
       ],
       renderComplete() {
         createIcons({

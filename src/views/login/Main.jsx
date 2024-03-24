@@ -15,7 +15,7 @@ function Main() {
   const initialValues = {
     email : "",
     password: "",
-    type: "admin",
+    type: "user",
   }
   const {values, errors, handleBlur, touched,handleChange, handleSubmit} = useFormik({
         initialValues : initialValues,

@@ -8,67 +8,141 @@ import {
     Modal,
     ModalBody,
   } from "@/base-components";
-  import { faker as $f } from "@/utils";
-  import * as $_ from "lodash";
-  import classnames from "classnames";
-  import { useState } from "react";
+  import IMAGES from "../../assets/images/Images";
+  import { useEffect, useState } from "react";
+import { helper } from "../../utils/helper";
   
   function Policygrid() {
     const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
-  
+    const [availablePolicies, setAvailablePolicies] = useState([])
+    const [currentPolicy, setCurrentPolicy] = useState({
+          policyId: "",
+          policyName : "",
+          policyPrice: 0,
+          policyDescription:"",
+          policyCompany:"",
+          policyCompanyDescription:"",
+          activePolicy:"",
+          claimsServed:0,
+    })
+    const initialState = {
+          policyId: "",
+          policyName : "",
+          policyPrice: 0,
+          policyDescription:"",
+          policyCompany:"",
+          policyCompanyDescription:"",
+          activePolicy:"",
+          claimsServed:0,
+    }
+    const [staticBackdropModalPreview,setStaticBackdropModalPreview] = useState(false)
+    // function fetch policies
+    async function fetchpolicies(){
+      // call your api here
+
+      // handle response and set jsonData into the state
+      var PolicyData = [{
+          policyId: 1,
+          policyName : "policy 1",
+          policyPrice: 15,
+          policyDescription:"haha new policy wooww",
+          policyCompany:"LIC",
+          policyCompanyDescription:"jeevan k saatth baad sab time",
+          activePolicy:"active",
+          claimsServed:10,
+      }] 
+      setAvailablePolicies(PolicyData)
+      console.log("policies fetched and set in state")
+    } 
+    // open modal to apply policy
+    function openApplyModal(policy){
+      console.log("current policy: ", policy)
+      setCurrentPolicy({
+        ...currentPolicy,
+        policyId: policy.policyId,
+        policyName : policy.policyName,
+        policyPrice: policy.policyPrice,
+        policyDescription: policy.policyDescription,
+        policyCompany: policy.policyCompany,
+        policyCompanyDescription: policy.policyCompanyDescription,
+        activePolicy: policy.activePolicy,
+        claimsServed: policy.claimsServed,
+      })
+      setStaticBackdropModalPreview(true)
+
+    }
+    // submit policy request
+    const submitRequest = async () => {
+      console.log("policy submitted: ", currentPolicy)
+      // handle api call here
+
+      // show success on that bases
+      helper.fireToast("success", "Policy request submitted")
+      // close modal here
+      setStaticBackdropModalPreview(false);
+    }
+    // fetch all the policies when the page loads at once
+    useEffect(()=>{
+      if (availablePolicies.length == 0){
+        console.log("policy state set")
+        fetchpolicies()
+      }
+      console.log("available polices: ", availablePolicies)
+    },[availablePolicies])
     return (
       <>
         <h2 className="intro-y text-lg font-medium mt-10">Available policies</h2>
         <div className="grid grid-cols-12 gap-6 mt-5">
           {/* BEGIN: Users Layout */}
-          {$_.take($f(), 4).map((faker, fakerKey) => (
+          {availablePolicies.length && availablePolicies.map(policy => (
             <div
-              key={fakerKey}
+              key={policy.policyId}
               className="intro-y col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3"
             >
               <div className="box">
                 <div className="p-5">
                   <div className="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10">
                     <img
-                      alt="Midone - HTML Admin Template"
+                      alt="No image available"
                       className="rounded-md"
-                      src={faker.images[0]}
+                      src=""
+                      
                     />
-                    {faker.trueFalse[0] && (
+                    {/* {faker.trueFalse[0] && (
                       <span className="absolute top-0 bg-pending/80 text-white text-xs m-5 px-2 py-1 rounded z-10">
                         Featured
                       </span>
-                    )}
+                    )} */}
                     <div className="absolute bottom-0 text-white px-5 pb-6 z-10">
                       <a href="" className="block font-medium text-base">
-                        {faker.products[0].name}
+                        {policy.policyName}
                       </a>
                       <span className="text-white/90 text-xs mt-3">
-                        {faker.products[0].category}
+                        {policy.policyCompany}
                       </span>
                     </div>
                   </div>
                   <div className="text-slate-600 dark:text-slate-500 mt-5">
                     <div className="flex items-center">
-                      <Lucide icon="Link" className="w-4 h-4 mr-2" /> Price: $
-                      {faker.totals[0]}
+                      <Lucide icon="Link" className="w-4 h-4 mr-2" /> Price: &#8377;
+                      {policy.policyPrice}
                     </div>
-                    <div className="flex items-center mt-2">
+                    {/* <div className="flex items-center mt-2">
                       <Lucide icon="Layers" className="w-4 h-4 mr-2" /> Remaining
                       Stock:
                       {faker.stocks[0]}
-                    </div>
+                    </div> */}
                     <div className="flex items-center mt-2">
                       <Lucide icon="CheckSquare" className="w-4 h-4 mr-2" />{" "}
                       Status:
-                      {faker.trueFalse[0] ? "Active" : "Inactive"}
+                      {policy.activePolicy == "active" ? "Active" : "Inactive"}
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-center lg:justify-end items-center p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                  <a className="flex items-center btn btn-success mr-auto" href="#">
+                  {policy.activePolicy == "active" ? <button className="flex items-center btn btn-success mr-auto" onClick={()=>openApplyModal(policy)}>
                     <Lucide icon="Check" className="w-4 h-4 mr-1" /> Apply
-                  </a>
+                  </button> : ""}
                   {/* <a className="flex items-center mr-3" href="#">
                     <Lucide icon="CheckSquare" className="w-4 h-4 mr-1" /> Edit
                   </a>
@@ -182,6 +256,59 @@ import {
           </ModalBody>
         </Modal>
         {/* END: Delete Confirmation Modal */}
+      
+      {/* BEGIN: Apply Policy Modal */}
+      <Modal
+                      backdrop="static"
+                      show={staticBackdropModalPreview}
+                      onHidden={() => {
+                        setStaticBackdropModalPreview(false);
+                      }}
+                    >
+                      <ModalBody className="px-5 py-10">
+                        <div className="text-center">
+                          <div className="mb-5">
+                            {/* POLICY CONTENT HERE */}
+                            <div class="px-4 pt-8">
+    <p className="text-xl font-medium">Order Summary</p>
+    <p className="text-gray-400">Check your policy details before checkout.</p>
+    <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+      <div className="flex flex-col rounded-lg bg-white sm:flex-row">
+        <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src={IMAGES.image1} alt="" />
+        <div className="flex w-full flex-col px-4 py-4">
+          <span className="font-semibold text-3xl">{currentPolicy.policyName}</span>
+          <span className="float-right text-gray-400">Claims Served : {currentPolicy.claimsServed}</span>
+          <p className="mt-auto text-lg font-bold">&#8377; {currentPolicy.policyPrice}</p>
+        <p className="float-right text-gray-400">Description: {currentPolicy.policyDescription}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+                            {/* POLICY CONTENT HERE */}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setStaticBackdropModalPreview(false);
+                            }}
+                            className="btn btn-danger mr-2"
+                          >
+                            close
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              
+                              submitRequest();
+                            }}
+                            className="btn btn-success "
+                          >
+                            Submit Request
+                          </button>
+                        </div>
+                      </ModalBody>
+                    </Modal>
+      {/* END: Apply Policy Modal */}
       </>
     );
   }
