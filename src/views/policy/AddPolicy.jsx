@@ -24,9 +24,13 @@ function AddPolicy() {
     const [superlargeModalSizePreview, setSuperlargeModalSizePreview] = useState(false);
     const navigate = useNavigate()
   const initialValues = {
-    policy_name : "",
-    policy_price: 0,
-    policy_description:""
+    policyName : "",
+    policyPrice: 0,
+    policyDescription:"",
+    policyCompany:"",
+    policyCompanyDescription:"",
+    activePolicy:true,
+    claimsServed:0,
   }
   const {values, errors, handleBlur, touched,handleChange, handleSubmit} = useFormik({
         initialValues : initialValues,
@@ -80,50 +84,109 @@ function AddPolicy() {
                
                <div className="intro-x mt-8">
                <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
-                <label htmlFor='policy_name'  className="form-check-label ml-0 mt-4">
+                <label htmlFor='policyName'  className="form-check-label ml-0 mt-4">
                     Policy name
                 </label>
                  <input
                    type="text"
-                   name="policy_name"
+                   name="policyName"
                    className="intro-x login__input form-control py-3 px-4 block "
                    placeholder="Policy name"
-                   value={values.policy_name}
+                   value={values.policyName}
                    onChange={handleChange}
                    onBlur={handleBlur}
                  />
-                 {errors.policy_name && touched.policy_name && <p className="text-red-800">{errors.policy_name}</p>}
+                 {errors.policyName && touched.policyName && <p className="text-red-800">{errors.policyName}</p>}
                </div>
                <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
 
-                 <label htmlFor='policy_price' className="form-check-label ml-0 mt-4">
+                 <label htmlFor='policyPrice' className="form-check-label ml-0 mt-4">
                     Policy price
                 </label>
                    <input
                    type="number"
-                   name="policy_price"
+                   name="policyPrice"
                    className="intro-x login__input form-control py-3 px-4 block "
                    placeholder="Policy price"
-                   value={values.policy_price}
+                   value={values.policyPrice}
                    onChange={handleChange}
                    onBlur={handleBlur}
                  />
-                 {errors.policy_price && touched.policy_price && <p className="text-red-800 ">{errors.policy_price}</p>} 
+                 {errors.policyPrice && touched.policyPrice && <p className="text-red-800 ">{errors.policyPrice}</p>} 
                </div>
                <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
-                 <label htmlFor='policy_description' className="form-check-label ml-0 mt-4">
+                 <label htmlFor='policyDescription' className="form-check-label ml-0 mt-4">
                     Policy description
                 </label>
                 <textarea
-                   name="policy_description"
+                   name="policyDescription"
                    className="intro-x login__input form-control py-3 px-4 block "
                    placeholder="Policy description"
-                   value={values.policy_description}
+                   value={values.policyDescription}
                    onChange={handleChange}
                    onBlur={handleBlur}
                  />
-                 {errors.policy_description && touched.policy_description && <p className="text-red-800">{errors.policy_description}</p>}
+                 {errors.policyDescription && touched.policyDescription && <p className="text-red-800">{errors.policyDescription}</p>}
                </div>
+               <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
+                 <label htmlFor='policyCompanyDescription' className="form-check-label ml-0 mt-4">
+                    Company Description
+                </label>
+                <textarea
+                   name="policyCompanyDescription"
+                   className="intro-x login__input form-control py-3 px-4 block "
+                   placeholder="Policy company description"
+                   value={values.policyCompanyDescription}
+                   onChange={handleChange}
+                   onBlur={handleBlur}
+                 />
+                 {errors.policyCompanyDescription && touched.policyCompanyDescription && <p className="text-red-800">{errors.policyCompanyDescription}</p>}
+               </div>
+               <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
+                 <label htmlFor='policyCompany' className="form-check-label ml-0 mt-4">
+                    Policy company
+                </label>
+                <input
+                  type='text'
+                   name="policyCompany"
+                   className="intro-x login__input form-control py-3 px-4 block "
+                   placeholder="Policy company"
+                   value={values.policyCompany}
+                   onChange={handleChange}
+                   onBlur={handleBlur}
+                 />
+                 {errors.policyCompany && touched.policyCompany && <p className="text-red-800">{errors.policyCompany}</p>}
+               </div>
+               <div className="flex-col items-start form-check form-switch w-full  mt-3 sm:mt-0 ">
+                 <label htmlFor='claimsServed' className="form-check-label ml-0 mt-4">
+                    Policy company
+                </label>
+                <input
+                  type='number'
+                   name="claimsServed"
+                   className="intro-x login__input form-control py-3 px-4 block "
+                   value={values.claimsServed}
+                   onChange={handleChange}
+                   onBlur={handleBlur}
+                 />
+                 {errors.claimsServed && touched.claimsServed && <p className="text-red-800">{errors.claimsServed}</p>}
+               </div>
+               <div className="flex-col items-start form-check form-switch w-full mt-3 sm:mt-0">
+                <label htmlFor='activePolicy' className="form-check-label ml-0 mt-4">
+                    Policy Status
+                </label>
+                <select
+                    name="activePolicy"
+                    className="intro-x login__input form-control py-3 px-4 block"
+                    value={values.activePolicy}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                {errors.activePolicy && touched.activePolicy && <p className="text-red-800">{errors.activePolicy}</p>}
+            </div>
                <div className="intro-x mt-5 xl:mt-8 text-center xl:text-left">
                  <button className="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
                    Register
